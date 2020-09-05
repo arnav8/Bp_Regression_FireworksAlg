@@ -6,12 +6,12 @@ from BPnn import *
 from NonLinearRegression import *
 from BP_NonLinearRegression import *
 
-'''从本地加载数据集
-参数：
-fileName：数据集名称，字符串，若不在当前路径下应为绝对路径
-返回值：
-dataMat：训练集特征集合，list型
-labelMat：训练集标签集合，list型
+'''Load data set from local
+parameter:
+fileName: data set name, string, if not in the current path, it should be an absolute path
+return value:
+dataMat: training set feature set, list type
+labelMat: training set label collection, list type
 '''
 def loadDataSet(fileName):
     dataMat = []; labelMat = []
@@ -23,12 +23,12 @@ def loadDataSet(fileName):
         labelMat.append(float(lineArr[5]))
     return dataMat, labelMat
 
-print '请选择需要使用的建模方法：'
-print '1:线性回归\n','2:非线性回归\n','3:神经网络\n','4:非线性回归+神经网络\n',\
-	  '5:烟花算法优化神经网络\n'
+print 'Please select the modeling method to be used：'
+print '1: linear regression\n','2:nonlinear regression\n','3:neural network\n','4:nonlinear regression+neural network\n',\
+'5: Fireworks algorithm optimizes neural network\n'
 a = raw_input("Enter your input: ")
 if a == '1':
-	#n次k折交叉验证
+	#n times k-fold cross validation
 	dataMat, labelMat = loadDataSet('9.txt')
 	dataMat = mat(dataMat); labelMat = mat(labelMat)
 	labelMat = labelMat.T
@@ -44,16 +44,16 @@ if a == '1':
 		for i in range(20, 27):
 			newx[i-20] = dataMat[z[i]]
 			newy[i-20] = labelMat[z[i]]
-		# 调用线性回归方法，得到训练集和测试集误差和r方
+		# Call the linear regression method to get the error and r square of the training set and test set
 		error_train, error, rr = LinearRegression(x, y, newx, newy)
 		sum_error_train += error_train; sum_error += error; sum_rr += rr
 	error_train = sum_error_train / 10; error = sum_error / 10; rr = sum_rr / 10
-	print '训练集均方误差=', error_train
-	print '验证集均方误差=', error
-	print 'r方=', rr
+	print 'Training set mean square error=', error_train
+	print 'Validation set mean square error=', error
+	print 'r square=', rr
 
 elif a == '2':
-	#n次k折交叉验证
+	#n times k-fold cross validation
 	dataMat, labelMat = loadDataSet('10.txt')
 	dataMat = mat(dataMat); labelMat = mat(labelMat)
 	labelMat = labelMat.T
@@ -69,13 +69,13 @@ elif a == '2':
 		for i in range(20, 27):
 			newx[i-20] = dataMat[z[i]]
 			newy[i-20] = labelMat[z[i]]
-		# 调用非线性回归方法，得到训练集和测试集误差和r方
+		# # Call the nonlinear regression method to get the error and r-square of the training set and test set
 		error_train, error, rr = NonLinearRegression(x, y, newx, newy)
 		sum_error_train += error_train; sum_error += error; sum_rr += rr
 	error_train = sum_error_train / 10; error = sum_error / 10; rr = sum_rr / 10
-	print '训练集均方误差=', error_train
-	print '验证集均方误差=', error
-	print 'r方=', rr
+	print 'Training set mean square error=', error_train
+	print 'Validation set mean square error=', error
+	print 'r square=', rr
 
 elif a == '3':
 	x, y = loadDataSet('1.txt')
@@ -90,10 +90,10 @@ elif a == '3':
 	for i in range(shape(newx)[0]):
 		for j in range(1, shape(newx)[1]):
 			newxx[i][j-1] = newx[i][j]
-	# 调用神经网络方法，得到训练集和测试集误差
+	# Call the neural network method to get the error of the training set and test set
 	train_error, error = BPneuralnetwork(xx, y, newxx, newy, False)
-	print '训练集均方误差=', train_error
-	print '验证集均方误差=', error
+	print 'Training set mean square error=', train_error
+	print 'Validation set mean square error=', error
 
 elif a == '4':
 	x, y = loadDataSet('3.txt')
@@ -108,10 +108,10 @@ elif a == '4':
 	for i in range(shape(newx)[0]):
 		for j in range(1, shape(newx)[1]):
 			newxx[i][j-1] = newx[i][j]
-	# 调用神经网络与非线性回归结合方法（不使用智能优化算法），得到训练集和测试集误差
+	# Call the combination method of neural network and nonlinear regression (without using intelligent optimization algorithm) to get the error of training set and test set
 	train_error, error = BP_NonLinearRegression(xx, y, newxx, newy, False)
-	print '训练集均方误差=', train_error
-	print '验证集均方误差=', error
+	print 'Training set mean square error=', train_error
+	print 'Validation set mean square error=', error
 
 else:
 	x, y = loadDataSet('3.txt')
@@ -126,7 +126,7 @@ else:
 	for i in range(shape(newx)[0]):
 		for j in range(1, shape(newx)[1]):
 			newxx[i][j-1] = newx[i][j]
-	# 调用神经网络与非线性回归结合方法（使用智能优化算法），得到训练集和测试集误差
+	#Call the combination method of neural network and nonlinear regression (using intelligent optimization algorithm) to get the error of training set and test set
 	train_error, error = BP_NonLinearRegression(xx, y, newxx, newy, True)
-	print '训练集均方误差=', train_error
-	print '验证集均方误差=', error
+	print 'Training set mean square error=', train_error
+	print 'Validation set mean square error=', error
