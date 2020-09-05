@@ -4,22 +4,22 @@
 from Bp_train import *
 import matplotlib.pyplot as plt
 
-'''神经网络-非线性回归调用函数
-参数：
-x：训练集样本集合，numpy数组
-y：训练集标签集合，numpy数组
-newx：测试集样本集合，numpy数组
-newy：测试集标签集合，numpy数组
-d：布尔型变量，是否使用fw算法进行优化
-返回值：
-train_error：训练集误差，浮点型
-error：测试集误差，浮点型
+'''Neural Network-Nonlinear Regression Calling Function
+parameters：
+x：Training set sample collection，numpy array
+y：Training set label collection，numpy array
+newx：Test set sample collection，numpy array
+newy：Test set label collection，numpy array
+d：Boolean variable，Whether to use the fireworks algorithm for optimization
+return value：
+train_error：Training set error, floating point
+error：Test set error, floating point
 '''
 def BP_NonLinearRegression(x, y, newx, newy, d):
 	x = log(x)
 	y = log(y)
 
-	#训练集归一化
+	#Training set normalization
 	xx = zeros([shape(x)[0], shape(x)[1]])
 	yy = zeros([shape(y)[0], shape(y)[1]])
 
@@ -31,8 +31,9 @@ def BP_NonLinearRegression(x, y, newx, newy, d):
 		for j in range(shape(y)[1]):
 			yy[i, j] = (y[i, j] - min(y[:, j])) / (max(y[:, j] - min(y[:, j])))
 
-	#求训练集均方误差
-	#a为神经网络的迭代误差、EE为烟花算法的迭代误差
+	#Seeking mean square error of training set
+	#a is the iteration error of the neural network,
+	#EE is the iteration error of the firework algorithm
 	whj, rh, vih, thetaj, a, EE = MyBP(xx, yy, 6, d)
 	alphah = dot(xx, whj)
 	bh = sigmoid(alphah - rh)
@@ -47,37 +48,37 @@ def BP_NonLinearRegression(x, y, newx, newy, d):
 	NewYY = exp(NewYY)
 	train_error = sum((NewYY - exp(y)) * (NewYY - exp(y))) / 2
 
-	#测试集
+	#Test set
 	newx = log(newx)
 	newxx = zeros([shape(newx)[0], shape(newx)[1]])
 
-	#测试集归一化
+	#Test set normalization
 	for i in range(shape(newx)[0]):
 		for j in range(shape(newx)[1]):
 			newxx[i, j] = (newx[i, j] - min(x[:, j])) / (max(x[:, j] - min(x[:, j])))
 
-	#神经网络预测
+	#Neural network prediction
 	predict_y = predictY(newxx, whj, rh, vih, thetaj)
 
-	#预测值反归一化
+	#Denormalization of predicted value
 	newpredict_y = zeros([shape(predict_y)[0], shape(predict_y)[1]])
 	for i in range(shape(predict_y)[0]):
 		for j in range(shape(predict_y)[1]):
 			newpredict_y[i, j] = predict_y[i, j] * (max(y[:, j] - min(y[:, j]))) + \
 			                  min(y[:, j])
 
-	#求测试集均方误差
+	#Find the mean square error of the test set
 	newpredict_y = exp(newpredict_y)
 	error = sum((newpredict_y - newy) * (newpredict_y - newy)) / 2
 
-	#画图
-	#真实值与预测值图像
+	#Drawing / Plotting
+	#True value and predicted value image
 	fig1 = plt.figure()
 	ax = fig1.add_subplot(111)
-	#画点
+	#Image
 	ax.scatter(NewYY.flatten(), exp(y).flatten(), color = 'blue')
 	ax.scatter(newpredict_y.flatten(), newy.flatten(), color = 'black')
-	#画线
+	#Draw a line
 	x = [0, 600]
 	y = [0, 600]
 	ax.plot(x, y, 'r')
@@ -86,7 +87,7 @@ def BP_NonLinearRegression(x, y, newx, newy, d):
 	plt.ylabel('realvalue', fontname='times new Roman', fontsize='10.5')
 	plt.show()
 
-	#神经网络误差函数图像
+	#Neural network error function image
 	fig2 = plt.figure()
 	bx = fig2.add_subplot(111)
 	x = range(200)
@@ -97,7 +98,7 @@ def BP_NonLinearRegression(x, y, newx, newy, d):
 	plt.ylabel('Error', fontname='times new Roman', fontsize='10.5')
 	plt.show()
 
-	#烟花算法误差函数图像
+	#Firework algorithm error function image
 	if d == True:
 		fig3 = plt.figure()
 		cx = fig3.add_subplot(111)
