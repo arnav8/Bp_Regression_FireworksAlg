@@ -4,12 +4,12 @@
 
 from numpy import  *
 
-'''sigmoid函数
-参数：
-x：自变量，是一个numpy型数组
-d：是否进行求导，是一个布尔型变量
-返回值：
-函数值或者求导的结果，是一个numpy数组
+'''sigmoid function
+parameter:
+x: argument, is a numpy array
+d: Whether to perform derivative, it is a Boolean variable
+return value:
+The function value or the result of the derivation is a numpy array
 '''
 def sigmoid(x, d = False):
 	if d == True:
@@ -17,17 +17,17 @@ def sigmoid(x, d = False):
 	else:
 		return 1 / (1 + exp(-x))
 
-'''计算适应度函数
-烟花个体的解码过程，得到权值和阈值参数，通过这些参数得到适应度即神经网络中的均方误差
-参数：
-train_x：训练集特征样本，numpy数组
-train_y：训练集标签样本，numpy数组
-x：当前个体（编码得到），numpy数组
-n：输入层神经元的数量，整型
-h：隐层神经元的数量，整型
-l：输出层神经元的数量，整型
-返回值：
-适应度函数值（均方误差），浮点型
+'''Calculate fitness function
+During the decoding process of individual fireworks, the weight and threshold parameters are obtained, and the fitness is obtained through these parameters, which is the mean square error in the neural network
+parameter:
+train_x: training set feature samples, numpy array
+train_y: training set label sample, numpy array
+x: current individual (obtained by encoding), numpy array
+n: the number of neurons in the input layer, integer
+h: the number of hidden neurons, integer
+l: the number of neurons in the output layer, integer
+return value:
+Fitness function value (mean square error), floating point
 '''
 def calculatef(train_x,train_y,x,n,h,l):
 	whj = zeros([n, h])
@@ -49,31 +49,31 @@ def calculatef(train_x,train_y,x,n,h,l):
 	for i in range(l):
 		thetaj[0][i] = x[n*h+h*l+h+i]
 
-	#计算适应度函数（均方误差）
-	# 隐层输入
+	#Calculate fitness function (mean square error)
+        # Hidden layer input
 	alphah = dot(train_x, whj)
-	# 隐层输出
+	# Hidden layer output
 	bh = sigmoid(alphah - rh)
-	# 输出层输入
+	# Output layer input
 	betaj = dot(bh, vih)
-	# 输出层输出
+	# Output layer output
 	ykj = sigmoid(betaj - thetaj)
-	# 误差
+	# error
 	E = train_y - ykj
-	#均方误差
+	#Mean square error
 	E = sum(E*E)/2
 	return E
 
-'''解码函数
-参数：
-x：当前个体（编码得到），numpy数组
-n：输入层神经元的数量，整型
-h：隐层神经元的数量，整型
-l：输出层神经元的数量，整型
-E：均方误差
-返回值：
-输入层-隐层的权重，隐层阈值，隐层-输出层权重，输出层阈值，均为numpy数组
-E：均方误差
+'''Decoding function
+parameter:
+x: current individual (obtained by encoding), numpy array
+n: the number of neurons in the input layer, integer
+h: the number of hidden neurons, integer
+l: the number of neurons in the output layer, integer
+E: mean square error
+return value:
+Input layer-hidden layer weight, hidden layer threshold, hidden layer-output layer weight, output layer threshold, all are numpy arrays
+E: mean square error
 '''
 def final_weight(x, n, h, l, E):
 	whj = zeros([n, h])
